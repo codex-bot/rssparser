@@ -2,7 +2,7 @@ from config import CHATS_COLLECTION_NAME
 from .base import CommandBase
 import feedparser
 import time
-import dateparser
+from dateutil.parser import parse as dateparser
 
 
 class CommandGet(CommandBase):
@@ -40,7 +40,7 @@ class CommandGet(CommandBase):
 
             for entry in reversed(entries):
                 try:
-                    publishing_date = dateparser.parse(entry.get('published') or entry.get('updated')).timestamp()
+                    publishing_date = dateparser(entry.get('published') or entry.get('updated')).timestamp()
                     if publishing_date > last_check:
                         message = "📣 «{}»\n\n{}\n\n{}".format(feed['title'], entry['title'], entry['link'])
                         await self.sdk.send_text_to_chat(
