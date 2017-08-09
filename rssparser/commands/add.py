@@ -58,7 +58,7 @@ class CommandAdd(CommandBase):
         # save link
         link_is_not_in_list = True
         for link in links:
-            if linkt['link'] == feed_link:
+            if link['link'] == feed_link:
                 link_is_not_in_list = False
                 break
 
