@@ -42,7 +42,7 @@ class CommandGet(CommandBase):
                 try:
                     publishing_date = dateparser.parse(entry.get('published') or entry.get('updated')).timestamp()
                     if publishing_date > last_check:
-                        message = "📣 " + entry['title'] + "\n\n" + entry['link']
+                        message = "📣 «{}»\n\n{}\n\n{}".format(feed['title'], entry['title'], entry['link'])
                         await self.sdk.send_text_to_chat(
                             payload["chat"],
                             message
