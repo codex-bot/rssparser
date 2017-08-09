@@ -24,8 +24,12 @@ class Rssparser:
             ('rssparser_remove', 'Remove subscription.', CommandRemove(self.sdk))
         ])
 
+        self.sdk.scheduler.restore(self.processor)
+
         self.sdk.start_server()
 
+    def processor(self, params):
+        return CommandGet(self.sdk).run
 
 if __name__ == "__main__":
     rssparser = Rssparser()
