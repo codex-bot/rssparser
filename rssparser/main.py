@@ -2,6 +2,7 @@ from sdk.codexbot_sdk import CodexBot
 from config import APPLICATION_TOKEN, APPLICATION_NAME, DB, SERVER
 
 from commands.help import CommandHelp
+from commands.add import CommandAdd
 from commands.get import CommandGet
 
 
@@ -14,9 +15,9 @@ class Rssparser:
         self.sdk.log("Rssparser module initialized")
 
         self.sdk.register_commands([
-            ('rssparser', 'RSS parser would send you notifications from your feeds.', CommandHelp(self.sdk)),
-            ('rssparser_help', 'help', CommandHelp(self.sdk)),
-            ('rssparser_get', 'get', CommandGet(self.sdk))
+            ('rssparser', 'RSS parser follows your feeds.', CommandHelp(self.sdk)),
+            ('rssparser_add', 'Add new feed.', CommandAdd(self.sdk)),
+            ('rssparser_get', 'Check your feed right now.', CommandGet(self.sdk).run)
         ])
 
         self.sdk.start_server()

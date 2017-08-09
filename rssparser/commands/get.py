@@ -1,37 +1,53 @@
-import random
-import string
-from time import time
-# from config import URL, CHATS_COLLECTION_NAME
+from config import CHATS_COLLECTION_NAME
 from .base import CommandBase
+import feedparser
+import time
+import dateparser
 
 
 class CommandGet(CommandBase):
 
-    async def __call__(self, payload):
+    async def run(self, payload):
 
-        # registered_chat = self.sdk.db.find_one(CHATS_COLLECTION_NAME, {'chat': payload['chat']})
-        #
-        # if registered_chat:
-        #     user_token = registered_chat['user']
-        # else:
-        #     user_token = self.generate_user_token()
-        #     new_chat = {
-        #         'chat': payload['chat'],
-        #         'user': user_token,
-        #         'dt_register': time()
-        #     }
-        #     self.sdk.db.insert(CHATS_COLLECTION_NAME, new_chat)
-        #     self.sdk.log("New user registered with token {}".format(user_token))
-        #
-        # message = "Адрес для отправки уведомлений в этот чат: {}/notify/{}\n\n" + \
-        #           "Сообщение отправляйте в POST-параметре «message»"
-        #
-        # await self.sdk.send_text_to_chat(
-        #     payload["chat"],
-        #     message.format(URL, user_token)
-        # )
+        chat_token = payload['chat']
+        registered_chat = self.sdk.db.find_one(CHATS_COLLECTION_NAME, {'chat': chat_token})
 
-         await self.sdk.send_text_to_chat(
-            payload["chat"],
-            "privet"
-        )
+        feeds = registered_chat.get('links')
+
+        if not feeds:
+            return await self.sdk.send_text_to_chat(
+                payload["chat"],
+                "It looks like you have no connected feeds.\n" \
+                "Add first one by /rssparser_add."
+            )
+
+        is_no_new_items = True
+
+        updated_feeds = []
+
+        for feed in feeds:
+            parsed = feedparser.parse(feed['link'])
+            entries = parsed.get('entries')
+
+            last_check = feed['last_check']
+
+            for entry in reversed(entries):
+                publishing_date = dateparser.parse(entry.get('published') or entry.get('updated')).timestamp()
+                if publishing_date > last_check:
+                    message = entry['title'] + "\n\n" + entry['link']
+                    await self.sdk.send_text_to_chat(
+                        payload["chat"],
+                        message
+                    )
+                    is_no_new_items = False
+
+            feed['last_check'] = time.time()
+            updated_feeds.append(feed)
+
+        self.sdk.db.update(CHATS_COLLECTION_NAME, {'chat': chat_token}, {"$set": {'links': updated_feeds}})
+
+        if payload['params'] != 'scheduler' and is_no_new_items:
+            return await self.sdk.send_text_to_chat(
+                payload["chat"],
+                "No updates for you at this moment."
+            )

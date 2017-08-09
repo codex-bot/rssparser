@@ -7,6 +7,9 @@ class CommandHelp(CommandBase):
         self.sdk.log("/help handler fired with payload {}".format(payload))
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            "Try using by enter command\n\n" \
-            "/rssparser_get *link*"
+            "RSS parser follows your feeds.\n\n" \
+            "Add new feed by entering a command with link to feed.\n" \
+            "<code>/rssparser_add *link*</code>\n\n" \
+            "Or check updates /rssparser_get",
+            'HTML'
         )

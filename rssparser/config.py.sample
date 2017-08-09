@@ -1,5 +1,5 @@
 # Unique application name in lowercase
-APPLICATION_NAME = ''
+APPLICATION_NAME = 'rssparser'
 
 # HTTP server settings
 SERVER = {
