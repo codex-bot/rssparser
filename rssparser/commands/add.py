@@ -56,8 +56,14 @@ class CommandAdd(CommandBase):
             links = []
 
         # save link
-        if not feed_link in links:
-            links.append({'link': feed_link, 'last_check': 0})
+        link_is_not_in_list = True
+        for link in links:
+            if linkt['link'] == feed_link:
+                link_is_not_in_list = False
+                break
+
+        if link_is_not_in_list:
+            links.append({'title': feed_title, 'link': feed_link, 'last_check': 0})
             self.sdk.log("New feed link was added to chat {}".format(chat_token))
         else:
             self.sdk.log("Passed feed link already exist in chat {}".format(chat_token))

@@ -8,8 +8,9 @@ class CommandHelp(CommandBase):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             "RSS parser follows your feeds.\n\n" \
-            "Add new feed by entering a command with link to feed.\n" \
-            "<code>/rssparser_add *link*</code>\n\n" \
-            "Or check updates /rssparser_get",
+            "/rssparser_list — show list of your feeds\n" \
+            "/rssparser_add — add new feed\n" \
+            "/rssparser_get — check updates\n" \
+            "/rssparser_remove — remove subscription\n",
             'HTML'
         )

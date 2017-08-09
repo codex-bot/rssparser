@@ -8,7 +8,6 @@ aiohttp==2.0.7
   - yarl [required: >=0.10.0,<0.11, installed: 0.10.1]
     - multidict [required: >=2.0, installed: 2.1.4]
 asyncio==3.4.3
-feedparser
 pika==0.10.0
 pipdeptree==0.10.1
   - pip [required: >=6.0.0, installed: 9.0.1]
@@ -19,3 +18,5 @@ setuptools==35.0.2
     - six [required: Any, installed: 1.10.0]
   - six [required: >=1.6.0, installed: 1.10.0]
 wheel==0.29.0
+dateparser
+feedparser
