@@ -39,15 +39,17 @@ class CommandGet(CommandBase):
             last_check = feed['last_check']
 
             for entry in reversed(entries):
-                publishing_date = dateparser.parse(entry.get('published') or entry.get('updated')).timestamp()
-                if publishing_date > last_check:
-                    message = entry['title'] + "\n\n" + entry['link']
-                    await self.sdk.send_text_to_chat(
-                        payload["chat"],
-                        message
-                    )
-                    is_no_new_items = False
-
+                try:
+                    publishing_date = dateparser.parse(entry.get('published') or entry.get('updated')).timestamp()
+                    if publishing_date > last_check:
+                        message = entry['title'] + "\n\n" + entry['link']
+                        await self.sdk.send_text_to_chat(
+                            payload["chat"],
+                            message
+                        )
+                        is_no_new_items = False
+                except:
+                    self.sdk.log("{} feed's items have no published date.".format(feed['link']))
             feed['last_check'] = time.time()
             updated_feeds.append(feed)
 
