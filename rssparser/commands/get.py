@@ -42,10 +42,11 @@ class CommandGet(CommandBase):
                 try:
                     publishing_date = dateparser(entry.get('published') or entry.get('updated')).timestamp()
                     if publishing_date > last_check:
-                        message = "📣 «{}»\n\n{}\n\n{}".format(feed['title'], entry['title'], entry['link'])
+                        message = "{}: <a href=\"{}\">{}</a>".format(feed['title'], entry['link'], entry['title'])
                         await self.sdk.send_text_to_chat(
                             payload["chat"],
-                            message
+                            message,
+                            "HTML"
                         )
                         is_no_new_items = False
                 except:
