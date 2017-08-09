@@ -1,0 +1,28 @@
+# Unique application name in lowercase
+APPLICATION_NAME = 'rssparser'
+
+# HTTP server settings
+SERVER = {
+    'host': '127.0.0.1',
+    'port': 1335
+}
+
+# RabbitMQ server settings
+RABBITMQ = {
+    'host': '127.0.0.1',
+}
+
+# MongoDB
+DB = {
+    'name': 'default',
+    'host': '127.0.0.1',
+    'port': 27017
+}
+
+# Token got from App Manager
+APPLICATION_TOKEN = ''
+
+
+# We will store chat and links in this collection
+# _id | chat | links
+CHATS_COLLECTION_NAME = 'links'
