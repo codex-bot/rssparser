@@ -12,7 +12,7 @@ class CommandGet(CommandBase):
         chat_token = payload['chat']
         registered_chat = self.sdk.db.find_one(CHATS_COLLECTION_NAME, {'chat': chat_token})
 
-        if not registered_chat:
+        if payload['params'] != 'scheduler' and not registered_chat:
             return await self.sdk.send_text_to_chat(
                 payload["chat"],
                 "It looks like you have no connected feeds.\n" \
@@ -21,7 +21,7 @@ class CommandGet(CommandBase):
 
         feeds = registered_chat.get('links')
 
-        if not feeds:
+        if payload['params'] != 'scheduler' and not feeds:
             return await self.sdk.send_text_to_chat(
                 payload["chat"],
                 "It looks like you have no connected feeds.\n" \
