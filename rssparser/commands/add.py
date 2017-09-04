@@ -76,5 +76,5 @@ class CommandAdd(CommandBase):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            "From this moment we follow «{}».".format(feed_title)
+            "Subscribed on «{}».\nUse command /rssparser_remove to unsubscribe.".format(feed_title)
         )
