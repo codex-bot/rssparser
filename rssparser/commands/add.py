@@ -1,7 +1,7 @@
 from config import CHATS_COLLECTION_NAME
 from .base import CommandBase
 from .get import CommandGet
-
+import time
 import feedparser
 
 
@@ -63,7 +63,7 @@ class CommandAdd(CommandBase):
                 break
 
         if link_is_not_in_list:
-            links.append({'title': feed_title, 'link': feed_link, 'last_check': 0})
+            links.append({'title': feed_title, 'link': feed_link, 'last_check': time.time()})
             self.sdk.log("New feed link was added to chat {}".format(chat_token))
         else:
             self.sdk.log("Passed feed link already exist in chat {}".format(chat_token))
