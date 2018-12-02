@@ -1,3 +1,0 @@
-[submodule "rssparser/sdk"]
-	path = rssparser/sdk
-	url = git@github.com:codex-bot/sdk-python.git
